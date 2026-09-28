@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Project FORESIGHT — AI-Powered Demand Forecasting & Inventory Intelligence Platform">
+  <title>Project FORESIGHT | AI Demand & Inventory Intelligence Platform</title>
+
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-bw">
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div class="logo-text">
+          <h1>FORESIGHT</h1>
+          <span>Inventory AI</span>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li>
+          <a href="#overview-section" class="nav-link active">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Executive Overview</span>
+          </a>
+        </li>
+        <li>
+          <a href="#forecasting-section" class="nav-link">
+            <i class="fa-solid fa-wave-square"></i>
+            <span>Demand Forecast</span>
+          </a>
+        </li>
+        <li>
+          <a href="#inventory-section" class="nav-link">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <span>Inventory Triage</span>
+          </a>
+        </li>
+        <li>
+          <a href="#simulator-section" class="nav-link">
+            <i class="fa-solid fa-sliders"></i>
+            <span>What-If Simulator</span>
+          </a>
+        </li>
+        <li>
+          <a href="#model-section" class="nav-link">
+            <i class="fa-solid fa-brain"></i>
+            <span>ML Intelligence</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-status">
+        <div class="status-badge">
+          <span class="pulse-dot"></span>
+          <span>Engine Online</span>
+        </div>
+        <div class="engine-info">Uvicorn ASGI • v1.0.0</div>
+        <div class="engine-info" style="color:#38bdf8;">Model: Tuned Random Forest</div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+      <!-- Top Header -->
+      <header class="top-header" id="overview-section">
+        <div class="header-title">
+          <h2>Project FORESIGHT Intelligence Platform</h2>
+          <p>AI-Driven SKU Demand Forecasting, Stockout Prevention & Inventory Optimization</p>
+        </div>
+        <div class="header-actions">
+          <!-- Theme Switcher (Color vs Black & White) -->
+          <div class="theme-toggle" id="theme-toggle-group">
+            <button class="theme-btn" data-theme="neon" id="theme-btn-color" title="Vibrant Neon Color Theme">
+              <i class="fa-solid fa-palette"></i> Color
+            </button>
+            <button class="theme-btn active" data-theme="bw" id="theme-btn-bw" title="Sleek Black & White Monochrome Theme">
+              <i class="fa-solid fa-circle-half-stroke"></i> B&W
+            </button>
+          </div>
+
+          <!-- Currency Switcher Toggle -->
+          <div class="currency-toggle" id="currency-toggle-group">
+            <button class="curr-btn active" data-currency="USD" id="curr-usd" title="Switch to US Dollar ($)">
+              <span>$</span> USD
+            </button>
+            <button class="curr-btn" data-currency="INR" id="curr-inr" title="Switch to Indian Rupee (₹)">
+              <span>₹</span> INR
+            </button>
+          </div>
+
+          <button class="btn btn-secondary" id="btn-export">
+            <i class="fa-solid fa-file-arrow-down"></i> Export 14D Forecast
+          </button>
+          <button class="btn btn-primary" id="btn-refresh">
+            <i class="fa-solid fa-arrows-rotate"></i> Sync Live Data
+          </button>
+        </div>
+      </header>
+
+      <!-- Executive KPI Cards -->
+      <section class="kpi-grid">
+        <div class="kpi-card cyan">
+          <div class="kpi-header">
+            <span class="kpi-title">Forecast Accuracy</span>
+            <div class="kpi-icon-wrap"><i class="fa-solid fa-bullseye"></i></div>
+          </div>
+          <div class="kpi-value" id="kpi-accuracy">--%</div>
+          <div class="kpi-footer">
+            <span class="kpi-tag positive" id="kpi-accuracy-sub">Tuned ML Champion</span>
+          </div>
+        </div>
+
+        <div class="kpi-card rose">
+          <div class="kpi-header">
+            <span class="kpi-title">Stockout Risk (Immediate PO)</span>
+            <div class="kpi-icon-wrap"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          </div>
+          <div class="kpi-value" id="kpi-stockout">--</div>
+          <div class="kpi-footer">
+            <span class="kpi-tag danger">SKU_REORDER (2.0 DOS)</span>
+          </div>
+        </div>
+
+        <div class="kpi-card amber">
+          <div class="kpi-header">
+            <span class="kpi-title">Overstock Excess Risk</span>
+            <div class="kpi-icon-wrap"><i class="fa-solid fa-box-archive"></i></div>
+          </div>
+          <div class="kpi-value" id="kpi-overstock">--</div>
+          <div class="kpi-footer">
+            <span class="kpi-tag warning">SKU_CLEAR (97.5 DOS)</span>
+          </div>
+        </div>
+
+        <div class="kpi-card emerald">
+          <div class="kpi-header">
+            <span class="kpi-title">Total Inventory Value</span>
+            <div class="kpi-icon-wrap"><i class="fa-solid fa-sack-dollar"></i></div>
+          </div>
+          <div class="kpi-value" id="kpi-inventory-val">$--</div>
+          <div class="kpi-footer">
+            <span class="kpi-tag positive" id="kpi-pipeline">Pipeline: --</span>
+          </div>
+        </div>
+
+        <div class="kpi-card violet">
+          <div class="kpi-header">
+            <span class="kpi-title">Volatile Watch Items</span>
+            <div class="kpi-icon-wrap"><i class="fa-solid fa-chart-line-up"></i></div>
+          </div>
+          <div class="kpi-value" id="kpi-watch">--</div>
+          <div class="kpi-footer">
+            <span class="kpi-tag" style="background: rgba(139, 92, 246, 0.15); color: #c4b5fd;">SKU_WATCH (40 on order)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Forecasting & Charts Section -->
+      <section class="dashboard-section" id="forecasting-section">
+        <div class="section-header">
+          <div class="section-title">
+            <i class="fa-solid fa-arrow-trend-up" style="color: #38bdf8;"></i>
+            <h3>Demand Trends & 14-Day Forward Multi-Step AI Forecast</h3>
+          </div>
+          <div class="chart-controls">
+            <select class="select-input" id="chartSkuSelect">
+              <option value="ALL">All SKUs Aggregated</option>
+              <option value="SKU_REORDER">SKU_REORDER (Furniture - Critical PO)</option>
+              <option value="SKU_CLEAR">SKU_CLEAR (Decor - Clearance Target)</option>
+              <option value="SKU_WATCH">SKU_WATCH (Textiles - High Volatility)</option>
+              <option value="SKU_HEALTHY">SKU_HEALTHY (Lighting - Balanced)</option>
+            </select>
+          </div>
+        </div>
+        <div class="charts-grid">
+          <div class="chart-card">
+            <canvas id="demandForecastChart"></canvas>
+          </div>
+          <div class="chart-card">
+            <canvas id="categoryDoughnutChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Inventory Triage & ROP Section -->
+      <section class="dashboard-section" id="inventory-section">
+        <div class="section-header">
+          <div class="section-title">
+            <i class="fa-solid fa-boxes-stacked" style="color: #a78bfa;"></i>
+            <h3>Actionable Inventory Triage & Reorder Point (ROP) Matrix</h3>
+          </div>
+          <div class="section-subtitle">Real-time Safety Stock, Days of Supply & Automated Decision Engine</div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>SKU & Category</th>
+                <th>Selling Price & Margin</th>
+                <th>Daily Velocity</th>
+                <th>Stock on Hand</th>
+                <th>Days of Supply (DOS)</th>
+                <th>Safety Buffer & ROP</th>
+                <th>Triage Status</th>
+                <th>Recommended Action</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-table-body">
+              <!-- Dynamically populated via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <h4 style="font-size: 15px; margin-bottom: 12px; color: var(--text-muted);">
+            <i class="fa-solid fa-chart-column" style="color: #06b6d4; margin-right: 6px;"></i> Current Stock vs Reorder Point (ROP) & Safety Stock
+          </h4>
+          <div style="height: 220px;">
+            <canvas id="inventoryBarChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive What-If Scenario Simulator -->
+      <section class="dashboard-section" id="simulator-section">
+        <div class="section-header">
+          <div class="section-title">
+            <i class="fa-solid fa-sliders" style="color: #10b981;"></i>
+            <h3>Interactive "What-If" AI Demand Scenario Simulator</h3>
+          </div>
+          <div class="section-subtitle">Simulate dynamic pricing, marketing promotions, and calendar events to see instant AI predictions</div>
+        </div>
+
+        <div class="simulator-layout">
+          <!-- Input Controls -->
+          <div class="simulator-inputs">
+            <div class="form-group">
+              <label for="sim-sku">Target SKU</label>
+              <select class="form-control" id="sim-sku">
+                <option value="SKU_REORDER">SKU_REORDER (Furniture - $249.99)</option>
+                <option value="SKU_CLEAR">SKU_CLEAR (Decor - $29.99)</option>
+                <option value="SKU_WATCH">SKU_WATCH (Textiles - $89.99)</option>
+                <option value="SKU_HEALTHY">SKU_HEALTHY (Lighting - $79.99)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Active Marketing Promotion</label>
+              <div class="toggle-group">
+                <button type="button" class="toggle-btn" data-type="promo" data-val="0">No Promotion</button>
+                <button type="button" class="toggle-btn active" data-type="promo" data-val="1">Promotion Active (+Boost)</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Retail Holiday Effect</label>
+              <div class="toggle-group">
+                <button type="button" class="toggle-btn active" data-type="holiday" data-val="0">Regular Day</button>
+                <button type="button" class="toggle-btn" data-type="holiday" data-val="1">Holiday Event</button>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label for="sim-dow">Day of the Week</label>
+                <select class="form-control" id="sim-dow">
+                  <option value="0">Monday</option>
+                  <option value="1">Tuesday</option>
+                  <option value="2">Wednesday</option>
+                  <option value="3">Thursday</option>
+                  <option value="4">Friday</option>
+                  <option value="5" selected>Saturday (Weekend)</option>
+                  <option value="6">Sunday (Weekend)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sim-price" id="sim-price-label">Simulated Price ($ USD)</label>
+                <input type="number" step="0.5" class="form-control" id="sim-price" value="249.99">
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Output Result Card -->
+          <div class="result-card">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-cyan); font-weight: 700;">
+                  <i class="fa-solid fa-microchip"></i> Live ML Model Output
+                </span>
+                <span class="status-pill healthy" id="res-margin">--% Margin</span>
+              </div>
+
+              <div class="result-kpis">
+                <div class="result-item">
+                  <div class="label">Predicted Demand</div>
+                  <div class="val" id="res-demand">-- units</div>
+                </div>
+                <div class="result-item">
+                  <div class="label">Projected Revenue</div>
+                  <div class="val" style="color: #10b981;" id="res-revenue">$--</div>
+                </div>
+                <div class="result-item">
+                  <div class="label">Projected Gross Profit</div>
+                  <div class="val" style="color: #a78bfa;" id="res-profit">$--</div>
+                </div>
+                <div class="result-item">
+                  <div class="label">Model Confidence</div>
+                  <div class="val" style="color: #38bdf8;">95% Level</div>
+                </div>
+              </div>
+            </div>
+
+            <p style="font-size: 12px; color: var(--text-dim); line-height: 1.4;">
+              *Predictions generated using Tuned Random Forest regressor with multi-factor recursive lags and calendar interaction features.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ML Model Intelligence & Feature Importance -->
+      <section class="dashboard-section" id="model-section">
+        <div class="section-header">
+          <div class="section-title">
+            <i class="fa-solid fa-brain" style="color: #8b5cf6;"></i>
+            <h3>Machine Learning Model Intelligence & Explainability</h3>
+          </div>
+          <div class="section-subtitle">Champion Architecture: <strong id="champ-model-name" style="color: #38bdf8;">Tuned Random Forest</strong></div>
+        </div>
+
+        <div class="charts-grid">
+          <div>
+            <h4 style="font-size: 14px; margin-bottom: 12px; color: var(--text-muted);">
+              Top Influential Demand Predictors (Feature Importance)
+            </h4>
+            <div class="feat-list" id="feature-importance-list">
+              <!-- Dynamically populated via JS -->
+            </div>
+          </div>
+
+          <div>
+            <h4 style="font-size: 14px; margin-bottom: 12px; color: var(--text-muted);">
+              Model Benchmark Leaderboard (Out-of-Sample Test)
+            </h4>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Model Architecture</th>
+                    <th>MAE</th>
+                    <th>RMSE</th>
+                    <th>WAPE (%)</th>
+                    <th>R²</th>
+                  </tr>
+                </thead>
+                <tbody id="benchmark-table-body">
+                  <!-- Dynamically populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="app-toast">
+    <i class="fa-solid fa-circle-check" id="toast-icon"></i>
+    <span id="toast-msg">Notification</span>
+  </div>
+
+  <!-- Application Controller -->
+  <script src="js/app.js"></script>
+</body>
+</html>

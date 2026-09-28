@@ -1,0 +1,5 @@
+sku_id,category,lead_time_days,unit_cost,selling_price
+SKU_REORDER,Furniture,5,120.0,249.99
+SKU_CLEAR,Decor,7,15.0,29.99
+SKU_WATCH,Textiles,10,45.0,89.99
+SKU_HEALTHY,Lighting,5,35.0,79.99

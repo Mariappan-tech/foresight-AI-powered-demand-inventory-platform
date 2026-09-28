@@ -1,0 +1,5 @@
+sku_id,avg_daily_sales,std_daily_sales,lead_time_days,unit_cost,selling_price,current_stock_on_hand,current_stock_on_order,category,safety_stock,lead_time_demand,reorder_point,days_of_supply,inventory_status,action_recommendation
+SKU_CLEAR,1.5378151260504203,0.549112009912623,7,15.0,29.99,150,0,Decor,3,11,14,97.5,OVERSTOCK_RISK,EXCESS: Run clearance promotion or discount campaign to free working capital.
+SKU_HEALTHY,7.697478991596639,1.2524864886360743,5,35.0,79.99,50,0,Lighting,5,39,44,6.5,HEALTHY,OPTIMAL: Inventory balanced. Regular replenishment schedule.
+SKU_REORDER,9.857142857142858,2.1795883388558748,5,120.0,249.99,20,0,Furniture,9,50,59,2.0,STOCKOUT_RISK,CRITICAL: Place purchase order immediately! Stock below Reorder Point.
+SKU_WATCH,15.268907563025211,8.617775755144667,10,45.0,89.99,60,40,Textiles,45,153,198,3.9,EXPEDITE_PO,"WARNING: Stock low, replenishment order pending in transit."
